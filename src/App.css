@@ -1,10 +1,45 @@
 html {
   font-size: 16px;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.jsonforms-container {
+  height: calc(100vh - 550px);
+  overflow-y: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+.jsonform {
+  margin: auto;
+  padding: 1rem;
+}
+
+.jsonforms-errors {
+  color: red;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  border: 2px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #f9f9f9;
 }
 
 .App {
   text-align: center;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
+}
+
+.App-version {
+  margin-top: -10px; /* Espace entre le logo et la version */
+  text-align: center;
+  font-size: 14px; /* Taille de la version */
+  color: #6c757d; /* Couleur de la version */
 }
 
 .App-logo {
@@ -13,9 +48,21 @@ html {
 }
 
 .App-header {
-  background-color: #222;
+  background-color: #122147;
   padding: 20px;
   color: white;
+}
+
+.App-footer {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+}
+
+.App-language {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
 }
 
 .App-title {
@@ -24,6 +71,20 @@ html {
 
 .App-intro {
   font-size: large;
+}
+
+.App-debug-pre {
+  height: calc(100vh - 400px);
+  overflow-y: auto;
+  background-color: #f0efee;
+  width: 33%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Branding-logo {
+  width: 100px; /* Ajuste la taille du logo selon tes besoins */
+  height: auto;
 }
 
 @keyframes App-logo-spin {

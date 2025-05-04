@@ -1,8 +1,8 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
-import { StrictMode } from 'react';
-
+import './i18n';
 /**
  * Customize form so each control has more space
  */

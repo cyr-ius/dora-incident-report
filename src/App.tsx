@@ -1,13 +1,19 @@
 import './App.css';
+import { Footer } from './components/Footer';
 import { Header } from './components/Header';
-import { JsonFormsDemo } from './components/JsonFormsDemo';
+import { JsonFormsDora } from './components/JsonFormsDora';
+import { DebugProvider } from './context/DebugContext';
+import { LocaleProvider } from './context/LocaleContext';
 
 const App = () => {
   return (
-    <>
-      <Header />
-      <JsonFormsDemo />
-    </>
+    <LocaleProvider>
+      <DebugProvider>
+        <Header />
+        <JsonFormsDora />
+        <Footer />
+      </DebugProvider>
+    </LocaleProvider>
   );
 };
 

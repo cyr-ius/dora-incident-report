@@ -1,55 +1,118 @@
 {
-  "type": "VerticalLayout",
+  "type": "Categorization",
   "elements": [
     {
-      "type": "Control",
-      "label": "Completed",
-      "scope": "#/properties/done"
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/name"
-    },
-    {
-      "type": "HorizontalLayout",
+      "type": "Category",
+      "label": "Report Currency",
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/due_date"
+          "scope": "#/properties/incidentSubmission"
         },
         {
           "type": "Control",
-          "scope": "#/properties/rating"
+          "scope": "#/properties/reportCurrency"
         }
       ]
     },
     {
-      "type": "HorizontalLayout",
+      "type": "Category",
+      "label": "Submitting Entity",
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/recurrence"
+          "scope": "#/properties/submittingEntity"
+        }
+      ]
+    },
+    {
+      "type": "Category",
+      "label": "Affected Entity",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/affectedEntity"
+        }
+      ]
+    },
+    {
+      "type": "Category",
+      "label": "ultimate Parent Undertaking",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/ultimateParentUndertaking"
+        }
+      ]
+    },
+    {
+      "type": "Category",
+      "label": "Incident",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/incident"
+        }
+      ]
+    },
+    {
+      "type": "Category",
+      "label": "Impact",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/impactAssessment"
+        }
+      ]
+    },
+    {
+      "type": "Category",
+      "label": "Contact",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/primaryContact"
         },
         {
           "type": "Control",
-          "scope": "#/properties/recurrence_interval",
-          "rule": {
-            "effect": "HIDE",
-            "condition": {
-              "type": "LEAF",
-              "scope": "#/properties/recurrence",
-              "expectedValue": "Never"
-            }
+          "scope": "#/properties/secondaryContact"
+        }
+      ]
+    },
+    {
+      "type": "Category",
+      "label": "Other Auhorities",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/incidentSubmission",
+          "options": {
+            "readonly": true
           }
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/reportingToOtherAuthorities"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/reportingToOtherAuthoritiesOther"
         }
       ]
     },
     {
-      "type": "Control",
-      "scope": "#/properties/description",
-      "options": {
-        "multi": true
-      }
+      "type": "Category",
+      "label": "Duration Service Downtime",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/informationDurationServiceDowntimeActualOrEstimate"
+        }
+      ]
     }
-  ]
+  ],
+  "options": {
+    "variant": "stepper",
+    "showNavButtons": true
+  }
 }

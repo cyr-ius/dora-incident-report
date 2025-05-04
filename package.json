@@ -2,6 +2,7 @@
   "name": "jsonforms-react-seed",
   "version": "0.1.1",
   "private": true,
+  "main": "electron.js",
   "dependencies": {
     "@jsonforms/core": "3.5.1",
     "@jsonforms/material-renderers": "3.5.1",
@@ -10,8 +11,16 @@
     "@mui/lab": "6.0.0-beta.22",
     "@mui/material": "^6.1.0",
     "@mui/x-date-pickers": "^7.17.0",
+    "@types/json-schema": "^7.0.15",
+    "ajv-i18n": "^4.2.0",
+    "dayjs": "^1.11.13",
+    "electron": "^36.1.0",
+    "i18next": "^25.0.2",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-i18next": "^15.5.1"
   },
   "devDependencies": {
     "@testing-library/react": "^16.0.0",
@@ -42,7 +51,8 @@
     "test": "vitest run --coverage",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --config video=false",
-    "cypress:ci": "BROWSER=none start-server-and-test start http://localhost:3000 cypress:run"
+    "cypress:ci": "BROWSER=none start-server-and-test start http://localhost:3000 cypress:run",
+    "electron": "npm run build && electron ."
   },
   "browserslist": [
     ">0.2%",
