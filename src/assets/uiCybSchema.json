@@ -1,0 +1,32 @@
+{
+  "type": "Categorization",
+  "elements": [
+    {
+      "type": "Category",
+      "label": "Submitting Entity",
+      "elements": [
+        { "type": "Control", "scope": "#/properties/submittingEntity" }
+      ]
+    },
+    {
+      "type": "Category",
+      "label": "Affected Entity",
+      "elements": [
+        { "type": "Control", "scope": "#/properties/affectedFinancialEntity" }
+      ]
+    },
+    {
+      "type": "Category",
+      "label": "Contact",
+      "elements": [
+        { "type": "Control", "scope": "#/properties/primaryContact" },
+        { "type": "Control", "scope": "#/properties/secondaryContact" }
+      ]
+    },
+    {
+      "type": "Category",
+      "label": "Threat",
+      "elements": [{ "type": "Control", "scope": "#/properties/cyberThreat" }]
+    }
+  ]
+}

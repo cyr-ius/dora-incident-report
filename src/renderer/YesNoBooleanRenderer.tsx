@@ -12,8 +12,10 @@ const YesNoBoolean = ({ data, handleChange, path, label }: ControlProps) => {
     <FormControl fullWidth>
       <InputLabel>{label}</InputLabel>
       <Select
+        required
         value={data === true ? 'Yes' : data === false ? 'No' : ''}
-        onChange={event => handleChange(path, event.target.value === 'Yes')}>
+        onChange={event => handleChange(path, event.target.value === 'Yes')}
+        defaultValue={false || 'Select'}>
         <MenuItem value="Yes">Yes</MenuItem>
         <MenuItem value="No">No</MenuItem>
       </Select>
@@ -23,4 +25,4 @@ const YesNoBoolean = ({ data, handleChange, path, label }: ControlProps) => {
 
 export const YesNoBooleanRenderer = withJsonFormsControlProps(YesNoBoolean);
 
-export const yesNoBooleanTester: RankedTester = rankWith(4, isBooleanControl);
+export const yesNoBooleanTester: RankedTester = rankWith(3, isBooleanControl);

@@ -32,7 +32,6 @@ export const LocaleProvider = ({ children }: { children: ReactNode }) => {
     dayjs.locale(newLocale);
   };
 
-  // init synchronisation
   useEffect(() => {
     setLocale(locale);
   }, []);

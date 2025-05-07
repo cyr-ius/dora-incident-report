@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LocaleButton } from '../buttons/Locale';
 import { useDebug } from '../context/DebugContext';
 import { appVersion } from '../version';
 
 export const Footer: FC = () => {
-  const { debugMode, toggleDebugMode } = useDebug();
+  const { debugMode } = useDebug();
   const { t } = useTranslation();
   return (
     <footer className="App-footer">
@@ -13,6 +14,7 @@ export const Footer: FC = () => {
         <small>Version: {appVersion}</small>
         {debugMode && <small> - {t('Created by')} Cédric Levasseur</small>}
       </div>
+      <LocaleButton />
     </footer>
   );
 };

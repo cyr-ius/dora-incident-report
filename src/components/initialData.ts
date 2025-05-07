@@ -8,4 +8,10 @@ export const initialData = {
       entityType: 'AFFECTED_ENTITY',
     },
   ],
+  impactAssessment: {
+    hasImpactOnRelevantClients: false,
+  },
+  incident: {
+    isBusinessContinuityActivated: false,
+  },
 };

@@ -289,7 +289,7 @@
               ]
             }
           },
-          "required": ["incident", "impactAssessment"]
+          "required": []
         },
         {
           "properties": {
@@ -298,7 +298,6 @@
             }
           }
         },
-
         {
           "properties": {
             "incidentSubmission": {
@@ -321,7 +320,7 @@
               }
             }
           },
-          "required": []
+          "required": ["reportingToOtherAuthoritiesOther"]
         },
         {
           "not": {
@@ -462,7 +461,7 @@
           "description": "field 1.9, 1.12 - depending on the type of the contact primary or second"
         }
       },
-      "required": ["email"],
+      "required": ["name", "email", "phone"],
       "additionalProperties": false
     },
     "Incident": {
@@ -688,8 +687,7 @@
         "classificationTypes",
         "financialEntityCode",
         "detectionDateTime",
-        "classificationDateTime",
-        "isBusinessContinuityActivated"
+        "classificationDateTime"
       ],
       "dependencies": {
         "rootCausesDetailedClassification": {
@@ -841,12 +839,8 @@
       "type": "object",
       "properties": {
         "hasImpactOnRelevantClients": {
-          "description": "field 3.8",
-          "title": "Has impact on relevant clients?",
-          "oneOf": [
-            { "const": true, "title": "Yes" },
-            { "const": false, "title": "No" }
-          ]
+          "type": "boolean",
+          "description": "field 3.8"
         },
         "serviceImpact": {
           "$ref": "#/$defs/ServiceImpact"
@@ -881,7 +875,7 @@
           "description": "field 3.30"
         }
       },
-      "required": ["hasImpactOnRelevantClients"],
+      "required": [],
       "additionalProperties": false
     },
     "ServiceImpact": {
@@ -960,7 +954,12 @@
           "minItems": 1
         }
       },
-      "required": [],
+      "required": [
+        "affectedClients",
+        "affectedFinancialCounterparts",
+        "affectedTransactions",
+        "numbersActualEstimate"
+      ],
       "additionalProperties": false
     },
     "NumberPercentageType": {

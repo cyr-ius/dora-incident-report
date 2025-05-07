@@ -85,13 +85,6 @@
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/incidentSubmission",
-          "options": {
-            "readonly": true
-          }
-        },
-        {
-          "type": "Control",
           "scope": "#/properties/reportingToOtherAuthorities"
         },
         {
