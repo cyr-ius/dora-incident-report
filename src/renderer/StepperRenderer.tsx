@@ -1,51 +1,21 @@
 import {
   isCategorization,
   isCategory,
-  JsonSchema7,
   LayoutProps,
   rankWith,
   VerticalLayout,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
-import { Box, Button, Step, StepLabel, Stepper } from '@mui/material';
-import Grid2 from '@mui/material/Grid2';
-import { useEffect, useMemo, useState } from 'react';
+import { Box, Button, Grid2, Step, StepLabel, Stepper } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { DownloadJSONButton } from '../buttons/DownloadJSON';
 import { GeneratePDGButton } from '../buttons/GeneratePDF';
-import { ValidateButton } from '../buttons/Validation';
-import { CustomAjv } from '../components/ajv';
-import { validationSchema } from '../components/utils';
-import { useError } from '../context/ErrorContext';
-import { useLocale } from '../context/LocaleContext';
+import { useSchema } from '../context/SchemaContext';
 
-const CustomCategorizationStepper = ({
-  uischema,
-  schema,
-  path,
-  renderers,
-  cells,
-  visible,
-  data,
-}: LayoutProps) => {
-  const categories = (uischema as any).elements.filter(isCategory);
-  const [activeStep, setActiveStep] = useState(0);
-  const { locale, setLocale } = useLocale();
-  const ajv = useMemo(() => CustomAjv(locale), [locale]);
+const StepperWrapper = (props: LayoutProps) => {
+  const categories = (props.uischema as any).elements.filter(isCategory);
+  const {errors, activeStep, setActiveStep } = useSchema();
   const { t } = useTranslation();
-  const { setErrors } = useError();
-
-  useEffect(() => {
-    // Emit event on each step change
-    const event = new CustomEvent('stepChange', {
-      detail: activeStep,
-    });
-    window.dispatchEvent(event);
-  }, [activeStep]);
-
-  if (!visible) {
-    return null;
-  }
 
   const stepUiSchema: VerticalLayout = {
     type: 'VerticalLayout',
@@ -53,35 +23,20 @@ const CustomCategorizationStepper = ({
   };
 
   const handleNext = () => {
-    const result = validationSchema(
-      schema as JsonSchema7,
-      ajv,
-      data,
-      categories,
-      activeStep,
-    );
-    console.debug('Validation errors :', result.currentErrors);
-    const filteredErrors = result.currentErrors.filter(
-      (item: any) => item.instancePath !== '/incidentSubmission',
-    );
-    console.warn('Validation filtered errors:', filteredErrors);
-
-    if (filteredErrors.length > 0) {
-      setErrors(filteredErrors);
-      return;
-    } else {
-      setActiveStep(prev => Math.min(prev + 1, categories.length - 1));
-      setErrors([]);
-    }
+    const prev = Math.min(activeStep + 1, categories.length - 1);
+    setActiveStep(prev);
   };
 
   const handlePrev = () => {
-    setActiveStep(prev => Math.max(prev - 1, 0));
-    setErrors([]);
+    const prev = Math.max(activeStep - 1, 0);
+    setActiveStep(prev);
   };
 
   return (
-    <Grid2 container justifyContent="center">
+    <Grid2
+      container
+      justifyContent="center"
+      sx={{ height: 'calc(100vh - 330px)' }}>
       <Grid2
         size={{ xs: 12, sm: 12, md: 8 }}
         sx={{
@@ -91,6 +46,7 @@ const CustomCategorizationStepper = ({
             xs: 'none', // caché sur xs
             sm: 'block', // visible à partir de sm
           },
+          my: 'auto',
         }}
         justifyContent="center">
         <Stepper activeStep={activeStep} alternativeLabel>
@@ -101,26 +57,18 @@ const CustomCategorizationStepper = ({
           ))}
         </Stepper>
       </Grid2>
-      <Grid2 size={{ xs: 12, sm: 8, md: 6 }} sx={{ mx: 2 }}>
-        <Box className="jsonforms-container">
-          <ValidateButton
-            schema={schema as JsonSchema7}
-            ajv={ajv}
-            data={data}
-            categories={categories}
-            activeStep={activeStep}></ValidateButton>
-          <Box>
-            <JsonFormsDispatch
-              schema={schema}
-              uischema={stepUiSchema}
-              path={path}
-              renderers={renderers}
-              cells={cells}
-            />
-          </Box>
+      <Grid2
+        size={{ xs: 12, sm: 8, md: 7 }}
+        sx={{
+          px: 2,
+          overflowY: 'auto',
+          height: 'calc(100vh - 550px)',
+        }}>
+        <Box>
+          <JsonFormsDispatch {...props} uischema={stepUiSchema} />
         </Box>
       </Grid2>
-      <Grid2 size={{ xs: 8, sm: 8, md: 6 }}>
+      <Grid2 size={{ xs: 8, sm: 8, md: 6 }} sx={{ my: 'auto' }}>
         <Box display="flex" justifyContent="space-between" sx={{ mx: 2 }}>
           <Button
             variant="contained"
@@ -128,19 +76,19 @@ const CustomCategorizationStepper = ({
             disabled={activeStep === 0}>
             {t('Previous')}
           </Button>
-          {activeStep != categories.length - 1 && (
-            <Button
-              variant="contained"
-              onClick={handleNext}
-              disabled={activeStep === categories.length - 1}>
-              {t('Next')}
-            </Button>
+          <Button
+            variant="contained"
+            onClick={handleNext}
+            disabled={
+              activeStep === categories.length - 1 || errors.length != 0
+            }>
+            {t('Next')}
+          </Button>
+          {activeStep === categories.length - 1 && (
+            <DownloadJSONButton schema={props.schema} data={props.data} />
           )}
           {activeStep === categories.length - 1 && (
-            <DownloadJSONButton schema={schema as JsonSchema7} data={data} />
-          )}
-          {activeStep === categories.length - 1 && (
-            <GeneratePDGButton schema={schema as JsonSchema7} data={data} />
+            <GeneratePDGButton schema={props.schema} data={props.data} />
           )}
         </Box>
       </Grid2>
@@ -148,8 +96,6 @@ const CustomCategorizationStepper = ({
   );
 };
 
-export const customCategorizationStepperTester = rankWith(3, isCategorization);
+export const StepperWrapperRenderer = withJsonFormsLayoutProps(StepperWrapper);
 
-export const CustomCategorizationStepperRenderer = withJsonFormsLayoutProps(
-  CustomCategorizationStepper,
-);
+export const StepperWrapperTester = rankWith(3, isCategorization);

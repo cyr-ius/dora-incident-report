@@ -3,7 +3,7 @@
   "elements": [
     {
       "type": "Category",
-      "label": "Report Currency",
+      "label": "Report Currency*",
       "elements": [
         {
           "type": "Control",
@@ -17,7 +17,7 @@
     },
     {
       "type": "Category",
-      "label": "Submitting Entity",
+      "label": "Submitting Entity*",
       "elements": [
         {
           "type": "Control",
@@ -27,7 +27,7 @@
     },
     {
       "type": "Category",
-      "label": "Affected Entity",
+      "label": "Affected Entity*",
       "elements": [
         {
           "type": "Control",
@@ -37,7 +37,7 @@
     },
     {
       "type": "Category",
-      "label": "ultimate Parent Undertaking",
+      "label": "Ultimate Parent Undertaking",
       "elements": [
         {
           "type": "Control",
@@ -47,7 +47,7 @@
     },
     {
       "type": "Category",
-      "label": "Incident",
+      "label": "Incident*",
       "elements": [
         {
           "type": "Control",
@@ -67,7 +67,7 @@
     },
     {
       "type": "Category",
-      "label": "Contact",
+      "label": "Contact*",
       "elements": [
         {
           "type": "Control",

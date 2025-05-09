@@ -1,18 +1,18 @@
-import { JsonSchema7 } from '@jsonforms/core';
+import { JsonSchema } from '@jsonforms/core';
 import { Button } from '@mui/material';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CustomAjv } from '../components/ajv';
-import { useError } from '../context/ErrorContext';
+import { validateSchema } from '../components/utils';
+import { useSchema } from '../context/SchemaContext';
 
 interface JSONButtonProps {
-  schema: JsonSchema7;
+  schema: JsonSchema;
   data: any;
 }
 
 export const DownloadJSONButton: FC<JSONButtonProps> = ({ schema, data }) => {
   const { t } = useTranslation();
-  const { setErrors } = useError();
+  const { setErrors } = useSchema();
 
   const handleDownload = (data: any) => {
     const timestamp = new Date().toISOString().replace(/[:.-]/g, '_');
@@ -30,13 +30,11 @@ export const DownloadJSONButton: FC<JSONButtonProps> = ({ schema, data }) => {
   };
 
   const downloadButton = () => {
-    const ajv = CustomAjv();
-    const validate = ajv.compile(schema);
-    const valid = validate(data);
-    if (valid) {
+    const vs = validateSchema(schema, data);
+    if (vs.valid) {
       handleDownload(data);
     } else {
-      if (validate.errors) setErrors(validate.errors);
+      if (vs.validate.errors) setErrors(vs.validate.errors);
     }
   };
   return (

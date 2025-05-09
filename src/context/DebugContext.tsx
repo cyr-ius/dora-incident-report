@@ -6,9 +6,9 @@ export const DebugContext = createContext({
   toggleDebugMode: () => {},
 });
 
-export const useDebug = () => useContext(DebugContext);
-
-export const DebugProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const DebugProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [debugMode, setDebugMode] = useState(false);
   const toggleDebugMode = () => setDebugMode(prev => !prev);
 
@@ -18,3 +18,5 @@ export const DebugProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     </DebugContext.Provider>
   );
 };
+
+export const useDebug = () => useContext(DebugContext);

@@ -8,6 +8,7 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import { FormControl, TextField } from '@mui/material';
 
 const TextArea = (props: ControlProps) => {
+  const hasError = props.errors?.length > 0;
   return (
     <FormControl fullWidth>
       <TextField
@@ -15,7 +16,7 @@ const TextArea = (props: ControlProps) => {
         onChange={event => props.handleChange(props.path, event.target.value)}
         value={props.data}
         multiline
-        minRows={1}></TextField>
+        minRows={1} ></TextField>
     </FormControl>
   );
 };

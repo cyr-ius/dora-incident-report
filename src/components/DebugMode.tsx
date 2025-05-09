@@ -1,15 +1,16 @@
 import { Box } from '@mui/material';
 import { FC, useMemo } from 'react';
+import { useData } from '../context/DataContext';
 import { useLocale } from '../context/LocaleContext';
+import { useSchema } from '../context/SchemaContext';
 
-interface DebugModeProps {
-  data: any;
-  errors: any;
-}
-
-export const DebugMode: FC<DebugModeProps> = ({ data, errors }) => {
-  const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
+export const DebugMode: FC = () => {
   const { locale } = useLocale();
+  const { activeStep, currenterrors, errors } = useSchema();
+
+  const { data } = useData();
+  const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
+
   return (
     <Box className="App-debug-pre">
       <small>
@@ -20,12 +21,17 @@ export const DebugMode: FC<DebugModeProps> = ({ data, errors }) => {
           <li>Remplacer le http par du https</li>
         </ul>
         <br />
-        Locale: {locale.toUpperCase()}
+        Locale: {locale.toUpperCase()} - Step: {activeStep}
         <br />
-        Export JSON:
+        Export JSON
+        <pre id="boundData">{stringifiedData}</pre>
       </small>
-      <pre id="boundData">{stringifiedData}</pre>
       <small>
+        Current Errors:
+        <br />
+        {JSON.stringify(currenterrors, null, 2)}
+        <br />
+        <br />
         Errors:
         <br />
         {JSON.stringify(errors, null, 2)}

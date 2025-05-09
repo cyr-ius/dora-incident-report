@@ -1,6 +1,6 @@
 {
   "$id": "IR-1.2",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema", 
   "title": "DORA Major Incident Report",
   "type": "object",
   "properties": {
@@ -95,6 +95,7 @@
   },
   "required": [
     "incidentSubmission",
+    "reportCurrency",
     "submittingEntity",
     "affectedEntity",
     "primaryContact",
@@ -133,12 +134,27 @@
                         "if": {
                           "properties": {
                             "classificationCriterion": {
+                              "const": "economic_impact"
+                            }
+                          }
+                        },
+                        "then": {
+                          "required": ["economicImpactMaterialityThreshold"]
+                        }
+                      },
+                      {
+                        "if": {
+                          "properties": {
+                            "classificationCriterion": {
                               "const": "geographical_spread"
                             }
                           }
                         },
                         "then": {
-                          "required": ["countryCodeMaterialityThresholds"]
+                          "required": [
+                            "countryCodeMaterialityThresholds",
+                            "memberStatesImpactTypeDescription"
+                          ]
                         }
                       },
                       {
@@ -162,7 +178,10 @@
                           }
                         },
                         "then": {
-                          "required": ["dataLosseMaterialityThresholds"]
+                          "required": [
+                            "dataLosseMaterialityThresholds",
+                            "dataLossesDescription"
+                          ]
                         }
                       },
                       {
@@ -174,7 +193,7 @@
                           }
                         },
                         "then": {
-                          "required": []
+                          "required": ["reputationalImpactType"]
                         }
                       }
                     ]
@@ -189,7 +208,15 @@
                 "incidentResolutionSummary",
                 "incidentResolutionDateTime",
                 "incidentResolutionVsPlannedImplementation",
-                "financialRecoveriesAmount"
+                "financialRecoveriesAmount",
+                "incidentOccurrenceDateTime",
+                "incidentDuration",
+                "rootCausesDetailedClassification",
+                "rootCausesAdditionalClassification",
+                "rootCausesInformation",
+                "rootCauseAddressingDateTime",
+                "grossAmountIndirectDirectCosts",
+                "incidentDiscovery"
               ]
             },
             "impactAssessment": {
@@ -200,11 +227,13 @@
                 "criticalServicesAffected",
                 "affectedAssets",
                 "isAffectedInfrastructureComponents",
-                "serviceImpact"
+                "serviceImpact",
+                "affectedFunctionalAreas",
+                "isImpactOnFinancialInterest"
               ]
             }
           },
-          "required": []
+          "required": ["reportingToOtherAuthorities"]
         },
         {
           "properties": {
@@ -240,7 +269,10 @@
                           }
                         },
                         "then": {
-                          "required": ["countryCodeMaterialityThresholds"]
+                          "required": [
+                            "countryCodeMaterialityThresholds",
+                            "memberStatesImpactTypeDescription"
+                          ]
                         }
                       },
                       {
@@ -252,7 +284,10 @@
                           }
                         },
                         "then": {
-                          "required": ["dataLosseMaterialityThresholds"]
+                          "required": [
+                            "dataLosseMaterialityThresholds",
+                            "dataLossesDescription"
+                          ]
                         }
                       },
                       {
@@ -264,7 +299,10 @@
                           }
                         },
                         "then": {
-                          "required": []
+                          "required": [
+                            "reputationalImpactType",
+                            "reputationalImpactDescription"
+                          ]
                         }
                       }
                     ]
@@ -274,7 +312,10 @@
               "required": [
                 "incidentType",
                 "financialEntityCode",
-                "incidentDescription"
+                "incidentDescription",
+                "incidentOccurrenceDateTime",
+                "incidentDuration",
+                "incidentDiscovery"
               ]
             },
             "impactAssessment": {
@@ -285,16 +326,21 @@
                 "criticalServicesAffected",
                 "affectedAssets",
                 "isAffectedInfrastructureComponents",
-                "serviceImpact"
+                "serviceImpact",
+                "affectedFunctionalAreas",
+                "isImpactOnFinancialInterest"
               ]
             }
-          },
-          "required": []
+          },         
+          "required": ["reportingToOtherAuthorities"]
         },
         {
           "properties": {
             "incidentSubmission": {
               "const": "initial_notification"
+            },
+            "incident": {
+              "required": []
             }
           }
         },
@@ -337,6 +383,32 @@
       ]
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "impactAssessment": {
+            "properties": {
+              "serviceImpact": {
+                "properties": {
+                  "serviceDowntime": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["serviceDowntime"]
+              }
+            },
+            "required": ["serviceImpact"]
+          }
+        },
+        "required": ["impactAssessment"]
+      },
+      "then": {
+        "required": ["informationDurationServiceDowntimeActualOrEstimate"]
+      }
+    }
+  ],
   "$defs": {
     "Entity": {
       "type": "object",
@@ -511,7 +583,7 @@
         "incidentDuration": {
           "type": "string",
           "pattern": "^\\d{1,3}:(?:[01]\\d|2[0-3]):[0-5]\\d$",
-          "description": "field 3.15"
+          "description": "field 3.15 - days:hour:min - ex: 31:06:30"
         },
         "originatesFromThirdPartyProvider": {
           "type": "string",
@@ -687,7 +759,8 @@
         "classificationTypes",
         "financialEntityCode",
         "detectionDateTime",
-        "classificationDateTime"
+        "classificationDateTime",
+        "incidentDiscovery"
       ],
       "dependencies": {
         "rootCausesDetailedClassification": {
@@ -705,7 +778,7 @@
                   }
                 }
               },
-              "required": []
+              "required": ["rootCausesOther"]
             },
             {
               "not": {
@@ -725,6 +798,20 @@
               "required": []
             }
           ]
+        },
+        "recurringNonMajorIncidentsDescription": {
+          "if": {
+            "properties": {
+              "recurringNonMajorIncidentsDescription": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": ["recurringNonMajorIncidentsDescription"]
+          },
+          "then": {
+            "required": ["recurringIncidentDate"]
+          }
         }
       },
       "additionalProperties": false
@@ -889,7 +976,7 @@
         "serviceDowntime": {
           "type": "string",
           "pattern": "^\\d{1,3}:(?:[01]\\d|2[0-3]):[0-5]\\d$",
-          "description": "field 3.16"
+          "description": "field 3.16 - days:hour:min - ex: 31:06:30"
         },
         "isTemporaryActionsMeasuresForRecovery": {
           "type": "boolean",
@@ -903,15 +990,33 @@
       },
       "required": ["isTemporaryActionsMeasuresForRecovery"],
       "additionalProperties": false,
-      "if": {
-        "properties": {
-          "isTemporaryActionsMeasuresForRecovery": {
-            "const": true
+      "dependencies": {
+        "isTemporaryActionsMeasuresForRecovery": {
+          "if": {
+            "properties": {
+              "isTemporaryActionsMeasuresForRecovery": {
+                "const": true
+              }
+            },
+            "required": ["isTemporaryActionsMeasuresForRecovery"]
+          },
+          "then": {
+            "required": ["descriptionOfTemporaryActionsMeasuresForRecovery"]
+          }
+        },
+        "serviceDowntime": {
+          "if": {
+            "properties": {
+              "serviceDowntime": {
+                "minLength": 1
+              }
+            },
+            "required": ["serviceDowntime"]
+          },
+          "then": {
+            "required": ["serviceRestorationDateTime"]
           }
         }
-      },
-      "then": {
-        "required": []
       }
     },
     "AffectedAssets": {
@@ -967,13 +1072,13 @@
       "properties": {
         "number": {
           "type": "integer",
-          "description": "generic"
+          "description": "Number"
         },
         "percentage": {
           "type": "number",
           "minimum": 0,
           "maximum": 100,
-          "description": "generic"
+          "description": "Percentage: 0 - 100"
         }
       },
       "required": [],

@@ -59,7 +59,9 @@ export const Header: FC = () => {
           alt="logo"
           onClick={toggleDebugMode}
         />
-        {currentPath.pathname == '/incident' && (
+
+        {(currentPath.pathname == '/incident' ||
+          currentPath.pathname == '/') && (
           <h1 className="title">{t('DORA Major Incident Report')}</h1>
         )}
         {currentPath.pathname == '/threat' && (

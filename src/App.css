@@ -7,21 +7,14 @@ html {
   min-height: 700px;
 }
 
-.jsonforms-container {
-  height: calc(100vh - 550px);
-  min-height: 300px;
-  overflow-y: auto;
-}
-
-.jsonforms-errors {
+.Forms-validation-errors {
   color: red;
-  margin-bottom: 5px;
-  border-radius: 10px;
-  border: 2px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
   padding: 16px;
   background-color: #f9f9f9;
+  height: calc(100vh - 400px);
+  overflow-y: auto;
+  height: min-content;
+  margin: 10px;
 }
 
 .App {

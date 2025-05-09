@@ -1,15 +1,18 @@
-import { JsonSchema7 } from '@jsonforms/core';
-import Ajv2020 from 'ajv/dist/2020';
+import { isCategory, JsonSchema } from '@jsonforms/core';
+import { ErrorObject } from 'ajv/dist/2020';
+import { CustomAjv } from './ajv';
 
-export const validationSchema = (
-  schema: JsonSchema7,
-  ajv: Ajv2020,
-  data: object,
-  categories?: any,
-  activeStep?: number,
-): any => {
-  let activeScopes: string[] = [];
-  let currentErrors: any[] = [];
+export const createTranslator =
+  (locale: any) => (key: string, defaultMessage: any) => {
+    console.log(
+      `Locale: ${locale}, Key: ${key}, Default Message: ${defaultMessage}`,
+    );
+    return defaultMessage;
+  };
+
+export const currentScopes = (uischema: any, activeStep: number): string[] => {
+  const categories = (uischema as any).elements.filter(isCategory);
+  let currentscopes: string[] = [];
 
   if (categories.length >= 0 && activeStep != undefined && activeStep >= 0) {
     const currentCategoryElements = categories[activeStep].elements ?? [];
@@ -27,17 +30,20 @@ export const validationSchema = (
       }
       return scopes;
     };
-    activeScopes = extractScopes(currentCategoryElements);
-    console.debug('Current Scopes', activeScopes);
+    currentscopes = extractScopes(currentCategoryElements);
   }
+  console.debug('Current Scopes', currentscopes);
+  return currentscopes;
+};
 
-  const validate = ajv.compile(schema);
-  const valid = validate(data);
-  console.debug('Current Data: ', data);
-
-  if (activeScopes.length > 0) {
-    validate.errors?.forEach(err => {
-      activeScopes.forEach((scope: string) => {
+export const currentScopesErrors = (
+  scopes: string[],
+  errors: ErrorObject[]
+) => {
+  let currentErrors: ErrorObject[] = [];
+  if (scopes.length > 0) {
+    errors?.forEach((err: any) => {
+      scopes.forEach((scope: string) => {
         if (err.instancePath.includes(scope)) {
           currentErrors = [...currentErrors, err];
         } else if (
@@ -49,17 +55,18 @@ export const validationSchema = (
       });
     });
   } else {
-    if (validate.errors) currentErrors = [...validate.errors];
+    if (errors) currentErrors = [...errors];
   }
+
   console.debug('Current Errors: ', currentErrors);
-  console.debug('Validation: ', valid, validate);
-  return { valid, validate, currentErrors };
+  return currentErrors;
 };
 
-export const createTranslator =
-  (locale: any) => (key: string, defaultMessage: any) => {
-    console.log(
-      `Locale: ${locale}, Key: ${key}, Default Message: ${defaultMessage}`,
-    );
-    return defaultMessage;
-  };
+export const validateSchema = (schema: JsonSchema, data: JsonSchema): any => {
+  const ajv = CustomAjv();
+  const validate = ajv.compile(schema);
+  const valid = validate(data);
+
+  console.debug('Validation: ', valid, validate);
+  return { valid, validate };
+};
