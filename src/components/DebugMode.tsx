@@ -15,24 +15,18 @@ export const DebugMode: FC = () => {
   return (
     <Box className="App-debug-pre">
       <small>
-        Pour l'import du schéma DORA, dans la balise $schema
-        <br />
-        <ul>
-          <li>Retirer le # en fin de ligne</li>
-          <li>Remplacer le http par du https</li>
-        </ul>
-        <br />
         Locale: {locale.toUpperCase()} - Step: {activeStep}
         <br />
         Current Errors:
         <br />
         {deduplicateErrors(currenterrors).map((error, index) => (
           <List sx={{p:0}}>
-          <ListItem sx={{p:0}}>
+          <ListItem sx={{p:0, pl:1}}>
             {<Typography variant="body2" color="error"><code>{error.instancePath || '/'}</code> : {error.message} </Typography>}
           </ListItem>
         </List>
-        ))}      
+        ))}  
+        <br />    
         Export JSON:
         <pre id="boundData">{stringifiedData}</pre>
         Errors:

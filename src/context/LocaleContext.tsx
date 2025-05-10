@@ -18,11 +18,13 @@ interface LocaleContextType {
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
 export const LocaleProvider = ({ children }: { children: ReactNode }) => {
-  const [locale, setLocaleState] = useState<Locale>('en');
+  const storedLocale = localStorage.getItem('locale') as Locale | null;
+  const [locale, setLocaleState] = useState<Locale>(storedLocale || 'en');
 
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale);
     i18n.changeLanguage(newLocale);
+    localStorage.setItem('locale', newLocale);
     dayjs.locale(newLocale);
   };
 
