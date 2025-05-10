@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, List, ListItem, Typography } from '@mui/material';
 import { FC, useMemo } from 'react';
 import { useData } from '../context/DataContext';
 import { useLocale } from '../context/LocaleContext';
@@ -23,15 +23,17 @@ export const DebugMode: FC = () => {
         <br />
         Locale: {locale.toUpperCase()} - Step: {activeStep}
         <br />
-        Export JSON
-        <pre id="boundData">{stringifiedData}</pre>
-      </small>
-      <small>
         Current Errors:
         <br />
-        {JSON.stringify(currenterrors, null, 2)}
-        <br />
-        <br />
+        {currenterrors.map((error, index) => (
+          <List sx={{p:0}}>
+          <ListItem sx={{p:0}}>
+            {<Typography variant="body2" color="error"><code>{error.instancePath || '/'}</code> : {error.message} </Typography>}
+          </ListItem>
+        </List>
+        ))}      
+        Export JSON:
+        <pre id="boundData">{stringifiedData}</pre>
         Errors:
         <br />
         {JSON.stringify(errors, null, 2)}

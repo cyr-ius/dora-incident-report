@@ -14,7 +14,7 @@ import { useSchema } from '../context/SchemaContext';
 
 const StepperWrapper = (props: LayoutProps) => {
   const categories = (props.uischema as any).elements.filter(isCategory);
-  const {errors, activeStep, setActiveStep } = useSchema();
+  const {currenterrors, activeStep, setActiveStep } = useSchema();
   const { t } = useTranslation();
 
   const stepUiSchema: VerticalLayout = {
@@ -80,7 +80,7 @@ const StepperWrapper = (props: LayoutProps) => {
             variant="contained"
             onClick={handleNext}
             disabled={
-              activeStep === categories.length - 1 || errors.length != 0
+              activeStep === categories.length - 1 || currenterrors.length != 0
             }>
             {t('Next')}
           </Button>

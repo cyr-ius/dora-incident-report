@@ -1,11 +1,13 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Fade, IconButton, Paper, Popper, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
+import { useDebug } from '../context/DebugContext';
 import { useSchema } from '../context/SchemaContext';
 import { GlobalErrors } from './GlobalErrors';
 export const PopperErrors = () => {
   const { currenterrors } = useSchema();
-  const [open, setOpen] = useState(true);
+  const {debugMode} = useDebug()
+  const [open, setOpen] = useState(debugMode ? false : true);
   const [position, setPosition] = useState({ top: 10, right: 10 }); // Position du popover
   const popperRef = useRef<HTMLDivElement | null>(null);
   const draggingRef = useRef(false);
@@ -16,8 +18,8 @@ export const PopperErrors = () => {
   };
 
   useEffect(() => {
-    setOpen(currenterrors.length > 0);
-  }, [currenterrors]);
+    setOpen(currenterrors.length > 0 && !debugMode);
+  }, [currenterrors,debugMode]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     draggingRef.current = true;
@@ -61,15 +63,14 @@ export const PopperErrors = () => {
               width: 400,
               position: 'fixed',
               zIndex: 10000,
-              top: `${position.top}px`, // Appliquer la position dynamique
-              right: `${position.right}px`, // Appliquer la position dynamique
+              top: `${position.top}px`, 
+              right: `${position.right}px`, 
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              cursor: draggingRef.current ? 'grabbing' : 'grab', // Changer le curseur pendant le déplacement
+              cursor: draggingRef.current ? 'grabbing' : 'grab', 
             }}
             onMouseDown={handleMouseDown}>
-            {/* Croix de fermeture en haut à droite */}
             <IconButton
               onClick={handleClose}
               sx={{
@@ -79,11 +80,8 @@ export const PopperErrors = () => {
               }}>
               <CloseIcon />
             </IconButton>
-
             <Typography variant="subtitle1">Errors</Typography>
-            {/* <Typography variant="body2"> */}
             <GlobalErrors />
-            {/* </Typography> */}
           </Paper>
         </Fade>
       )}

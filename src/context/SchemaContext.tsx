@@ -1,12 +1,16 @@
 import { JsonSchema, UISchemaElement } from '@jsonforms/core';
+import localize from 'ajv-i18n';
 import { ErrorObject } from 'ajv/dist/2020';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   currentScopes,
   currentScopesErrors,
+  deduplicateErrors,
   validateSchema,
 } from '../components/utils';
 import { useData } from './DataContext';
+import { useCustomErrors } from './ErrorContext';
+import { useLocale } from './LocaleContext';
 
 interface SchemaContextType {
   activeStep: number;
@@ -28,6 +32,9 @@ interface SchemaContextType {
 const SchemaContext = createContext<SchemaContextType | undefined>(undefined);
 
 export const SchemaProvider = ({ children }: { children: React.ReactNode }) => {
+  const {locale} = useLocale();
+  const {customerrors, addError, clearErrors} = useCustomErrors();
+
   const [activeStep, setActiveStep] = useState<number>(0);
   const [schema, setSchema] = useState<JsonSchema | undefined>(undefined);
   const [errors, setErrors] = useState<
@@ -42,26 +49,33 @@ export const SchemaProvider = ({ children }: { children: React.ReactNode }) => {
 
   const { data } = useData();
 
+  let currentErrors: ErrorObject<string, Record<string, any>, unknown>[] = []
+
   const setCurrentErrors = (errs: any) => {
-    console.log('Error Step', activeStep);
+    console.debug('Error Step', activeStep);
     if (schema) {
       const activeScopes = currentScopes(uischema, activeStep);
       const vs = validateSchema(schema, data);
-      let currentErrors = currentScopesErrors(activeScopes, vs.validate.errors);
+
+      if (vs.validate.errors && vs.validate.errors.length > 0) {
+        localize[locale](vs.validate.errors);
+      }
+
+      currentErrors = currentScopesErrors(activeScopes, vs.validate.errors);
       currentErrors = currentErrors.filter(
         err => err.instancePath != '/incidentSubmission',
       );
-      console.log('Error Context', errors);
-      setErrors(currentErrors);
-
-      console.log('Current Error Context', currentErrors);
+      console.debug('Error Context:', errors);
+      setErrors(vs.validate.errors);
       setFilteredErrors(currentErrors);
+
     }
   };
 
   useEffect(() => {
     setCurrentErrors(errors);
-  }, [activeStep, schema, uischema, data]);
+  }, [activeStep, data]);
+
 
   return (
     <SchemaContext.Provider

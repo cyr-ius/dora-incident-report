@@ -420,7 +420,7 @@
             "AFFECTED_ENTITY",
             "ULTIMATE_PARENT_UNDERTAKING_ENTITY"
           ],
-          "description": ""
+          "description": "field 1.1"
         },
         "name": {
           "type": "string",
@@ -471,7 +471,6 @@
           "description": "field 1.3b, 1.6, 1.14. The validation rules on the required field is not implemented"
         }
       },
-      "additionalProperties": false,
       "dependencies": {
         "entityType": {
           "oneOf": [
@@ -480,7 +479,7 @@
                 "entityType": {
                   "enum": ["SUBMITTING_ENTITY"]
                 },
-                "LEI": { "minLenght": 1 }
+                "LEI": { "minLength": 1 }
               },
               "required": ["name", "code"]
             },
@@ -489,7 +488,7 @@
                 "entityType": {
                   "enum": ["SUBMITTING_ENTITY"]
                 },
-                "code": { "minLenght": 1 }
+                "code": { "minLength": 1 }
               },
               "required": ["name", "LEI"]
             },
@@ -499,7 +498,17 @@
                   "enum": ["AFFECTED_ENTITY"]
                 }
               },
-              "required": ["affectedEntityType"]
+              "allOf": [
+                {
+                  "required": ["affectedEntityType"]
+                },
+                {
+                  "oneOf": [
+                    { "required": ["name", "LEI"] },
+                    { "required": ["name", "code"] }
+                  ]
+                }
+              ]
             },
             {
               "properties": {
@@ -507,12 +516,17 @@
                   "enum": ["ULTIMATE_PARENT_UNDERTAKING_ENTITY"]
                 }
               },
+              "oneOf": [
+                { "required": ["name", "LEI"] },
+                { "required": ["name", "code"] }
+              ],
               "required": []
             }
           ]
         }
       },
-      "required": ["name"]
+      "required": ["entityType","name"],
+      "additionalProperties": false  
     },
     "Contact": {
       "type": "object",

@@ -61,3 +61,4 @@ typings/
 build
 .yalc
 yalc.lock
+dist

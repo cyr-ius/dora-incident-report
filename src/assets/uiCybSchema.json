@@ -3,21 +3,21 @@
   "elements": [
     {
       "type": "Category",
-      "label": "Submitting Entity",
+      "label": "Submitting Entity*",
       "elements": [
         { "type": "Control", "scope": "#/properties/submittingEntity" }
       ]
     },
     {
       "type": "Category",
-      "label": "Affected Entity",
+      "label": "Affected Entity*",
       "elements": [
         { "type": "Control", "scope": "#/properties/affectedFinancialEntity" }
       ]
     },
     {
       "type": "Category",
-      "label": "Contact",
+      "label": "Contact*",
       "elements": [
         { "type": "Control", "scope": "#/properties/primaryContact" },
         { "type": "Control", "scope": "#/properties/secondaryContact" }
@@ -25,7 +25,7 @@
     },
     {
       "type": "Category",
-      "label": "Threat",
+      "label": "Threat*",
       "elements": [{ "type": "Control", "scope": "#/properties/cyberThreat" }]
     }
   ]

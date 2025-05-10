@@ -6,6 +6,7 @@ import {
 import { JsonForms } from '@jsonforms/react';
 import Grid2 from '@mui/material/Grid2';
 import { FC, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import schema from '../assets/cybSchema.json';
 import uischema from '../assets/uiCybSchema.json';
 import { useData } from '../context/DataContext';
@@ -19,6 +20,7 @@ import {
 import { CustomAjv } from './ajv';
 import { DebugMode } from './DebugMode';
 import { createTranslator } from './utils';
+import localize from 'ajv-i18n';
 
 const renderers = [
   ...materialRenderers,
@@ -31,10 +33,11 @@ const renderers = [
 const initialData = {};
 
 export const FormsDoraCyb: FC = () => {
-  const { data, setData } = useData();
+  const { setData } = useData();
   const { locale } = useLocale();
+  const { t } = useTranslation();
   const ajv = useMemo(() => CustomAjv(locale), [locale]);
-  const translation = useMemo(() => createTranslator(locale), [locale]);
+  const translation = createTranslator(t, locale);
   const { debugMode } = useDebug();
   const { setSchema, setUISchema, setActiveStep, setErrors, setCurrentErrors } =
   useSchema();
@@ -48,31 +51,36 @@ export const FormsDoraCyb: FC = () => {
   }, []);
 
   return (
-    <Grid2 container justifyContent={'center'}>
-      <Grid2
-        size={{ xs: 12, sm: 12, md: 4 }}
-        sx={{ display: debugMode ? 'block' : 'none', mx: 1 }}>
-        <DebugMode />
+      <Grid2 container justifyContent={'center'}>
+        <Grid2
+          size={{ xs: 12, sm: 12, md: 4 }}
+          sx={{ display: debugMode ? 'block' : 'none', mx: 1 }}>
+          <DebugMode />
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 12, md: debugMode ? 6 : 12 }}>
+          <JsonForms
+            schema={schema as JsonSchema7}
+            i18n={{ locale: locale, translate: translation }}
+            uischema={uischema}
+            data={initialData}
+            renderers={renderers}
+            cells={materialCells}
+            ajv={ajv}
+            validationMode="ValidateAndShow"
+            onChange={({ data, errors }) => {
+              if (errors && errors.length > 0)
+                localize[locale](errors)
+              setData(data);
+              setErrors(errors || []);
+            }}
+            config= {{
+              restrict: true,
+              trim: true,
+              showUnfocusedDescription: debugMode ,
+              hideRequiredAsterisk: false
+            }}
+          />
+        </Grid2>
       </Grid2>
-      <Grid2 size={{ xs: 12, sm: 12, md: debugMode ? 6 : 12 }}>
-        <JsonForms
-          schema={schema as JsonSchema7}
-          // i18n={{ locale: locale, translate: translation }}
-          uischema={uischema}
-          data={initialData}
-          renderers={renderers}
-          cells={materialCells}
-          ajv={ajv}
-          validationMode="ValidateAndShow"
-          onChange={({ data, errors }) => {
-            //   if (errors && errors.length > 0) {
-            //     localize[locale](errors);
-            //   }
-            setData(data);
-            setErrors(errors || []);
-          }}
-        />
-      </Grid2>
-    </Grid2>
   );
 };

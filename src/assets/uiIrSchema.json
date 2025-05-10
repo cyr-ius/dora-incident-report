@@ -67,7 +67,7 @@
     },
     {
       "type": "Category",
-      "label": "Contact*",
+      "label": "Contacts*",
       "elements": [
         {
           "type": "Control",
