@@ -3,6 +3,7 @@ import { FC, useMemo } from 'react';
 import { useData } from '../context/DataContext';
 import { useLocale } from '../context/LocaleContext';
 import { useSchema } from '../context/SchemaContext';
+import { deduplicateErrors } from './utils';
 
 export const DebugMode: FC = () => {
   const { locale } = useLocale();
@@ -25,7 +26,7 @@ export const DebugMode: FC = () => {
         <br />
         Current Errors:
         <br />
-        {currenterrors.map((error, index) => (
+        {deduplicateErrors(currenterrors).map((error, index) => (
           <List sx={{p:0}}>
           <ListItem sx={{p:0}}>
             {<Typography variant="body2" color="error"><code>{error.instancePath || '/'}</code> : {error.message} </Typography>}
