@@ -1,4 +1,3 @@
-// src/context/DebugContext.tsx
 import React, { createContext, useContext, useState } from 'react';
 
 export const DebugContext = createContext({

@@ -4,9 +4,7 @@ import {
   materialRenderers,
 } from '@jsonforms/material-renderers';
 import { JsonForms } from '@jsonforms/react';
-import { Button } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';
-import { ErrorObject } from 'ajv';
 import localize from 'ajv-i18n';
 import 'dayjs/locale/en';
 import 'dayjs/locale/fr';

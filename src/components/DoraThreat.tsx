@@ -5,6 +5,7 @@ import {
 } from '@jsonforms/material-renderers';
 import { JsonForms } from '@jsonforms/react';
 import Grid2 from '@mui/material/Grid2';
+import localize from 'ajv-i18n';
 import { FC, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import schema from '../assets/cybSchema.json';
@@ -20,7 +21,6 @@ import {
 import { CustomAjv } from './ajv';
 import { DebugMode } from './DebugMode';
 import { createTranslator } from './utils';
-import localize from 'ajv-i18n';
 
 const renderers = [
   ...materialRenderers,

@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LocaleButton } from '../buttons/Locale';
 import { useDebug } from '../context/DebugContext';
@@ -8,8 +8,6 @@ import { PopperErrors } from './Popper';
 export const Footer: FC = () => {
   const { debugMode } = useDebug();
   const { t } = useTranslation();
-
-  const anchorRef = useRef<HTMLButtonElement>(null);
 
   return (
     <footer className="App-footer">

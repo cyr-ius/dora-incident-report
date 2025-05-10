@@ -8,13 +8,13 @@ export const PopperErrors = () => {
   const { currenterrors } = useSchema();
   const {debugMode} = useDebug()
   const [open, setOpen] = useState(debugMode ? false : true);
-  const [position, setPosition] = useState({ top: 10, right: 10 }); // Position du popover
+  const [position, setPosition] = useState({ top: 10, right: 10 });
   const popperRef = useRef<HTMLDivElement | null>(null);
   const draggingRef = useRef(false);
   const offsetRef = useRef({ x: 0, y: 0 });
 
   const handleClose = () => {
-    setOpen(false); // Ferme le Popper lorsque la croix est cliquée
+    setOpen(false);
   };
 
   useEffect(() => {

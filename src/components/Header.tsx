@@ -8,8 +8,6 @@ export const Header: FC = () => {
   const { debugMode, toggleDebugMode } = useDebug();
   const { t } = useTranslation();
   const currentPath = useLocation();
-
-  // Menu state
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();

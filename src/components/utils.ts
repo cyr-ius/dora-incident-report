@@ -3,7 +3,6 @@ import { ErrorObject } from 'ajv/dist/2020';
 import { TFunction } from 'i18next';
 import { CustomAjv } from './ajv';
 
-
 export const createTranslator =
   (t:  TFunction<"translation", undefined>, locale: any) => (key: string, defaultMessage: any, context:any) => {    
 
